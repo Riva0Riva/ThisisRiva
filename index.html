@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#eadcf3" />
+    <meta name="description" content="Riva Zhang 的滚轮驱动 3D 赛博公路个人作品集" />
+    <title>This Is Riva</title>
+    <link rel="stylesheet" href="styles.css?v=16" />
+  </head>
+  <body>
+    <main class="journey" id="journey" tabindex="-1" aria-label="Riva 的 3D 个人作品集旅程">
+      <div class="scene-shell" aria-hidden="true">
+        <canvas id="matrix-background"></canvas>
+        <canvas id="world-canvas"></canvas>
+        <div class="scene-bloom"></div>
+        <div class="scene-vignette"></div>
+        <div class="scene-grain"></div>
+      </div>
+
+      <header class="topbar">
+        <a class="brand" href="contact.html" aria-label="了解并联系 Riva">
+          <span class="brand-orb">R</span>
+          <span class="brand-copy"><strong>ABOUT RIVA</strong><small>CONTACT ME</small></span>
+        </a>
+      </header>
+
+      <section class="hero-copy" aria-labelledby="hero-title">
+        <h1 id="hero-title">Riva</h1>
+        <p>SCROLL-DRIVEN PORTFOLIO JOURNEY</p>
+      </section>
+
+      <div class="station-layer" id="station-layer" aria-label="道路两侧的作品集站牌">
+        <a class="station-card" href="about.html" data-station-index="0" data-side="left" aria-label="打开 About Riva 个人简介页面">
+          <span class="station-number">01</span>
+          <span class="station-copy"><strong>ABOUT RIVA</strong><small>个人简介</small></span>
+          <span class="station-enter">ENTER ↗</span>
+        </a>
+        <a class="station-card" href="portfolio.html" data-station-index="1" data-side="right" aria-label="打开 Portfolio 作品集页面">
+          <span class="station-number">02</span>
+          <span class="station-copy"><strong>PORTFOLIO</strong><small>作品集</small></span>
+          <span class="station-enter">ENTER ↗</span>
+        </a>
+        <a class="station-card" href="campus.html" data-station-index="2" data-side="left" aria-label="打开 Campus Life 校园生活页面">
+          <span class="station-number">03</span>
+          <span class="station-copy"><strong class="station-title station-title-campus" aria-label="CAMPUS LIFE"><span>CAMPUS</span><span>LIFE</span></strong><small>校园生活</small></span>
+          <span class="station-enter">ENTER ↗</span>
+        </a>
+        <a class="station-card" href="contact.html" data-station-index="3" data-side="right" aria-label="打开 Contact 联系方式页面">
+          <span class="station-number">04</span>
+          <span class="station-copy"><strong>CONTACT</strong><small>联系方式</small></span>
+          <span class="station-enter">ENTER ↗</span>
+        </a>
+      </div>
+
+      <div class="vehicle-layer" aria-label="固定在道路中央的粉紫色未来概念车">
+        <div class="speed-aura" aria-hidden="true"></div>
+        <img class="route-car" src="assets/hero-car-forward.png" alt="浅粉紫色未来概念车的正后方视角" />
+        <div class="road-reflection" aria-hidden="true"></div>
+      </div>
+
+      <aside class="route-nav" aria-label="路线导航">
+        <div class="route-nav-heading"><strong>ROUTE</strong><small id="route-count">01 / 04</small></div>
+        <ol>
+          <li><button type="button" data-route-index="0"><b>01</b><span><strong>ABOUT RIVA</strong><small>个人简介</small></span></button></li>
+          <li><button type="button" data-route-index="1"><b>02</b><span><strong>PORTFOLIO</strong><small>作品集</small></span></button></li>
+          <li><button type="button" data-route-index="2"><b>03</b><span><strong>CAMPUS LIFE</strong><small>校园生活</small></span></button></li>
+          <li><button type="button" data-route-index="3"><b>04</b><span><strong>CONTACT</strong><small>联系方式</small></span></button></li>
+        </ol>
+      </aside>
+
+      <div class="journey-status" aria-live="polite">
+        <span id="status-index">01</span>
+        <span class="status-line"><i id="status-progress"></i></span>
+        <span id="status-name">ABOUT RIVA</span>
+      </div>
+
+      <div class="scroll-hint" aria-hidden="true"><span>↕</span><strong>SCROLL TO DRIVE</strong><small>滑动滚轮 · 前进 / 后退</small></div>
+      <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false">REDUCE MOTION</button>
+      <p class="webgl-notice" id="webgl-notice" role="status" hidden>当前设备无法启动 3D 场景，请尝试更新浏览器。</p>
+    </main>
+
+    <div class="cursor-orb" id="cursor-orb" aria-hidden="true"><span></span><i></i></div>
+    <script src="script.js?v=17"></script>
+  </body>
+</html>

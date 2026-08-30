@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Contact Riva for product, strategy and marketing conversations.">
+  <title>Contact / Riva</title>
+  <link rel="stylesheet" href="section-page.css">
+</head>
+<body class="contact-page-body">
+  <main class="section-page contact-page">
+    <header class="section-top contact-top">
+      <a class="section-brand" href="index.html">CONTACT RIVA</a>
+      <div class="contact-top-meta">
+        <span class="contact-top-label">STATION 04</span>
+        <a class="back-route" href="index.html">← BACK TO ROUTE</a>
+      </div>
+    </header>
+
+    <section class="contact-center" aria-labelledby="contact-title">
+      <p class="contact-kicker">A DIRECT LINE TO RIVA</p>
+      <h1 id="contact-title">CONTACT</h1>
+      <p class="contact-lede">For product thinking, strategy, marketing ideas or a thoughtful exchange, I would love to hear from you.</p>
+
+      <div class="contact-character" data-character aria-label="A hand-drawn character sitting above the contact options">
+        <span class="contact-character-halo"></span>
+        <img src="assets/contact-character.png" alt="Hand-drawn character" class="contact-character-image">
+      </div>
+
+      <div class="contact-actions" aria-label="Contact options">
+        <a class="contact-email-card" href="mailto:ZhangRuiwenZRW@163.com?subject=Hello%20Riva" data-email-link data-look="left">
+          <span class="contact-card-index">01</span>
+          <span class="contact-card-copy">
+            <small>PRIMARY CHANNEL</small>
+            <strong>START A CONVERSATION <i>↗</i></strong>
+          </span>
+        </a>
+
+        <button class="contact-copy-button" type="button" data-copy-email data-email="ZhangRuiwenZRW@163.com" data-look="right">
+          <span>02</span>
+          <strong>COPY EMAIL</strong>
+          <small data-copy-label>TO CLIPBOARD</small>
+        </button>
+      </div>
+      <p class="contact-note">THANK YOU FOR REACHING OUT.</p>
+    </section>
+
+    <footer class="contact-footer">
+      <span>OPEN TO PRODUCT · STRATEGY · MARKETING</span>
+      <span>04 / 04</span>
+    </footer>
+  </main>
+
+  <script>
+    const copyButton = document.querySelector('[data-copy-email]');
+    const copyLabel = document.querySelector('[data-copy-label]');
+    const email = 'ZhangRuiwenZRW@163.com';
+    document.querySelector('[data-email-link]')?.setAttribute('href', `mailto:${email}?subject=Hello%20Riva`);
+    document.querySelector('[data-email-label]')?.replaceChildren(email);
+    if (copyButton) copyButton.dataset.email = email;
+    const character = document.querySelector('[data-character]');
+    document.querySelectorAll('[data-look]').forEach((target) => {
+      target.addEventListener('pointerenter', () => { character.dataset.look = target.dataset.look; });
+      target.addEventListener('focus', () => { character.dataset.look = target.dataset.look; });
+    });
+
+    copyButton?.addEventListener('click', async () => {
+      if (!email) return;
+      try {
+        await navigator.clipboard.writeText(email);
+        copyLabel.textContent = 'COPIED';
+        window.setTimeout(() => { copyLabel.textContent = 'TO CLIPBOARD'; }, 1600);
+      } catch {
+        copyLabel.textContent = email;
+      }
+    });
+  </script>
+</body>
+</html>

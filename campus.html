@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Riva's campus competitions, business cases and community work.">
+  <title>Campus Life / Riva</title>
+  <link rel="stylesheet" href="section-page.css">
+</head>
+<body class="campus-page-body">
+  <main class="section-page campus-page">
+    <header class="section-top campus-top">
+      <a class="section-brand" href="index.html">CAMPUS LIFE / RIVA</a>
+      <div class="campus-top-meta">
+        <span class="campus-top-label">STATION 03</span>
+        <a class="back-route" href="index.html">← BACK TO ROUTE</a>
+      </div>
+    </header>
+
+    <section class="campus-intro" aria-labelledby="campus-title">
+      <div>
+        <p class="campus-kicker">COMPETITIONS · BUSINESS CASES · COMMUNITY</p>
+        <h1 id="campus-title">CAMPUS<br><em>LIFE.</em></h1>
+      </div>
+      <p class="campus-intro-note">A moving archive of research, collaboration, visual communication and the small worlds built with other people.</p>
+    </section>
+
+    <section class="campus-gallery-section" aria-label="Campus work image gallery">
+      <div class="campus-gallery-topline">
+        <span>IMAGE ARCHIVE / 12 WORKS</span>
+        <span>CLICK AN IMAGE TO OPEN</span>
+      </div>
+      <div class="campus-gallery-window" data-campus-gallery>
+        <div class="campus-gallery-lanes" data-campus-lanes></div>
+      </div>
+      <div class="campus-gallery-footer">
+        <span>INFINITE SCROLL / DRAG OR WHEEL TO MOVE</span>
+        <span>COMPETITION · BUSINESS · COMMUNITY</span>
+      </div>
+    </section>
+
+    <footer class="campus-footer">
+      <span>RESEARCH · MAKING · BELONGING</span>
+      <a href="index.html">RETURN TO ROUTE ↗</a>
+    </footer>
+  </main>
+
+  <div class="campus-detail" data-campus-detail aria-hidden="true">
+    <button class="campus-detail-close" type="button" data-campus-close aria-label="Close detail">×</button>
+    <div class="campus-detail-image-wrap">
+      <div class="campus-detail-media">
+        <img data-campus-detail-image alt="">
+      </div>
+    </div>
+    <article class="campus-detail-copy">
+      <p class="campus-detail-index" data-campus-detail-index></p>
+      <p class="campus-detail-category" data-campus-detail-category></p>
+      <h2 data-campus-detail-title></h2>
+      <p class="campus-detail-rule"></p>
+      <p class="campus-detail-description" data-campus-detail-description></p>
+      <div class="campus-detail-links" data-campus-detail-links hidden></div>
+      <p class="campus-detail-hint">ESC / CLOSE DETAIL</p>
+    </article>
+  </div>
+
+  <script>
+    (() => {
+      const gallery = document.querySelector('[data-campus-gallery]');
+      const lanesRoot = document.querySelector('[data-campus-lanes]');
+      const detail = document.querySelector('[data-campus-detail]');
+      if (!gallery || !lanesRoot || !detail) return;
+
+      const records = [
+        { category:'HKICPA BUSINESS CASE COMPETITION', title:'MAINLAND MARKET CASE', image:'assets/campus-submitted/zodiac-fashion-business-proposal.png', description:'A case project for the Hong Kong Institute of Certified Public Accountants, examining mainland market conditions, business context and strategic choices through the Zodiac Fashion Company case.' },
+        { category:'ENTREPRENEURSHIP', title:'I-FOUNDATION', image:'assets/campus-previews/doc-6c51fd12de.png', description:'An entrepreneurship plan for an AI-powered foundation device, combining personalized beauty services with a clear consumer proposition.' },
+        { category:'RESEARCH COMPETITION', title:'ALGORITHM PRICE DISCRIMINATION', image:'assets/campus-submitted/algorithm-price-discrimination-white-redacted.png', description:'A research presentation examining algorithmic price discrimination, its regulatory context and possible paths toward fairer digital markets.' },
+        { category:'BUSINESS CASE', title:'ANALYSIS OF HAIDILAO', image:'assets/campus-submitted/haidiLao-analysis-redacted.png', description:'A group case analysis of Haidilao, translating observations of service, operations and competition into a structured business perspective.' },
+        { category:'RESEARCH COMPETITION', title:'GREEN FRIDGE PURCHASE INTENT', image:'assets/campus-submitted/green-fridge-purchase-intent-redacted.png', description:'A research project on green appliance consumption in Zhengzhou, combining literature review, interviews, questionnaires and text mining to identify purchase drivers. The public image keeps team and instructor information private.' },
+        { category:'BUSINESS CASE', title:'BUDWEISER / CHANNEL STRATEGY', image:'assets/campus-previews/doc-928ace80df.png', description:'A brand and channel analysis of the beer market, connecting consumer portraits, content commerce and online-to-offline growth opportunities.' },
+        { category:'BUSINESS CASE', title:'L’ORÉAL / FRAGRANCE GROWTH', image:'assets/商赛/欧莱雅.png', description:'A marketing case exploring fragrance consumption, product personalization and digital communication as levers for a more relevant consumer experience.', video:'https://www.bilibili.com/video/BV193411p7BP/' },
+        { category:'ENTREPRENEURSHIP', title:'MIPET / SMART PET ECOSYSTEM', image:'assets/商赛/michong.png', description:'A smart-pet hardware concept that connects collars, feeding, monitoring and companionship into a more coherent everyday ecosystem.' },
+        { category:'COMMUNITY WORK', title:'LIGHT AND AUTUMN', image:'assets/社团活动/guangyingshiqiu.png', description:'“Light and Autumn” was a campus photography exhibition series. I coordinated a 25-work call for submissions, reached 1,260 voters through WeChat Moments, Xiaohongshu and offline promotion, and extended participation through a three-post WeChat editorial series.', links:[['READ THE CALL FOR SUBMISSIONS','https://mp.weixin.qq.com/s/4wSLxlqLRi16RZYED6PLJw'],['READ THE VOTING POST','https://mp.weixin.qq.com/s/DZRpV1ZApx9T_dC6zT1mKg'],['READ THE EXHIBITION POST','https://mp.weixin.qq.com/s/CFKsqX72svDsE7NHcy8Bvg']] },
+        { category:'COMMUNITY WORK', title:'BECAUSE OF YOU', image:'assets/社团活动/yingweiyouni.png', description:'“Because of You” was a campus photography exhibition series. I helped shape the call for submissions and promotion, bringing together 21 works and 504 voters, then extending the conversation through three WeChat posts.', links:[['READ THE CALL FOR SUBMISSIONS','https://mp.weixin.qq.com/s/m8ZJDH_fRA1AnPV7EmJbww'],['READ THE VOTING POST','https://mp.weixin.qq.com/s/mc9XT5wXtMkRnj1UbKvBfw'],['READ THE EXHIBITION POST','https://mp.weixin.qq.com/s/QjYgYhP-EuLwXVDB6oaamg']] },
+        { category:'COMMUNITY WORK', title:'ENGLISH TALENT SHOW', image:'assets/社团活动/english-talent-show-redacted.jpg', description:'A visual record of the Fourth “New Navigation Cup” English Talent Show, capturing the stage, audience and the atmosphere of a campus competition.' },
+        { category:'CONTENT OPERATIONS', title:'XIAOHONGSHU FOOD ACCOUNT', image:'assets/campus-submitted/xiaohongshu-food-account.png', description:'I independently planned and operated a Xiaohongshu food account from zero to one. In one month I produced four polished posts around campus and local dining, reaching 15K+ views on the best-performing post and more than 200 average interactions by iterating on the “place + scene + emotion” content formula.' }
+      ];
+
+      const asset = (value) => encodeURI(value);
+      const lanes = 3;
+      const laneRecords = Array.from({ length: lanes }, (_, laneIndex) => records.filter((_, index) => index % lanes === laneIndex));
+      const laneStates = [];
+      let selectedIndex = -1;
+
+      function createCard(record, recordIndex) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'campus-card';
+        button.dataset.recordIndex = String(recordIndex);
+        button.setAttribute('aria-label', `Open ${record.title}`);
+        const image = document.createElement('img');
+        image.src = asset(record.image);
+        image.alt = record.title;
+        image.loading = 'lazy';
+        button.appendChild(image);
+        button.addEventListener('click', () => openDetail(recordIndex));
+        return button;
+      }
+
+      laneRecords.forEach((lane, laneIndex) => {
+        const column = document.createElement('div');
+        column.className = `campus-lane campus-lane--${laneIndex + 1}`;
+        const track = document.createElement('div');
+        track.className = 'campus-lane-track';
+        lane.forEach((record, localIndex) => track.appendChild(createCard(record, laneIndex + localIndex * lanes)));
+        lane.forEach((record, localIndex) => {
+          const clone = createCard(record, laneIndex + localIndex * lanes);
+          clone.setAttribute('aria-hidden', 'true');
+          track.appendChild(clone);
+        });
+        column.appendChild(track);
+        lanesRoot.appendChild(column);
+        laneStates.push({ column, track, speed: laneIndex === 1 ? 0.12 : 0.17 + laneIndex * 0.035, offset: laneIndex === 1 ? -80 : -laneIndex * 120, span: 0 });
+      });
+
+      function measure() {
+        laneStates.forEach((state) => {
+          state.span = state.track.scrollHeight / 2;
+          if (state.span) state.offset = state.offset % state.span;
+        });
+      }
+
+      let paused = false;
+      gallery.addEventListener('mouseenter', () => { if (!isDragging) paused = true; });
+      gallery.addEventListener('mouseleave', () => { if (!isDragging) paused = false; });
+
+      function paintLanes() {
+        laneStates.forEach((state, index) => {
+          state.track.style.transform = `translate3d(0, ${state.offset.toFixed(2)}px, 0)`;
+          state.column.style.setProperty('--lane-tilt', `${index === 1 ? 0 : index === 0 ? -1.5 : 1.5}deg`);
+        });
+      }
+
+      function moveLanes(delta) {
+        laneStates.forEach((state) => {
+          if (!state.span) return;
+          state.offset += delta;
+          while (state.offset >= 0) state.offset -= state.span;
+          while (state.offset <= -state.span) state.offset += state.span;
+        });
+        paintLanes();
+      }
+
+      let isDragging = false;
+      let lastPointerY = 0;
+      let dragDistance = 0;
+      let suppressNextClick = false;
+
+      gallery.addEventListener('pointerdown', (event) => {
+        if (event.button !== undefined && event.button !== 0) return;
+        isDragging = true;
+        lastPointerY = event.clientY;
+        dragDistance = 0;
+        suppressNextClick = false;
+        paused = true;
+        gallery.classList.add('is-dragging');
+        gallery.setPointerCapture?.(event.pointerId);
+      });
+
+      gallery.addEventListener('pointermove', (event) => {
+        if (!isDragging) return;
+        const delta = event.clientY - lastPointerY;
+        lastPointerY = event.clientY;
+        dragDistance += Math.abs(delta);
+        if (dragDistance > 6) suppressNextClick = true;
+        moveLanes(delta);
+      });
+
+      const endDrag = (event) => {
+        if (!isDragging) return;
+        isDragging = false;
+        paused = true;
+        gallery.classList.remove('is-dragging');
+        if (event.pointerId !== undefined && gallery.hasPointerCapture?.(event.pointerId)) {
+          gallery.releasePointerCapture(event.pointerId);
+        }
+      };
+
+      gallery.addEventListener('pointerup', endDrag);
+      gallery.addEventListener('pointercancel', endDrag);
+      gallery.addEventListener('click', (event) => {
+        if (!suppressNextClick) return;
+        event.preventDefault();
+        event.stopPropagation();
+        suppressNextClick = false;
+      }, true);
+      gallery.addEventListener('wheel', (event) => {
+        if (Math.abs(event.deltaY) < 1) return;
+        event.preventDefault();
+        paused = true;
+        moveLanes(-event.deltaY);
+      }, { passive:false });
+
+      function render() {
+        if (!paused && !detail.classList.contains('is-open')) {
+          laneStates.forEach((state, index) => {
+            state.offset -= state.speed;
+            if (state.offset <= -state.span) state.offset += state.span;
+          });
+          paintLanes();
+        }
+        requestAnimationFrame(render);
+      }
+
+      const image = detail.querySelector('[data-campus-detail-image]');
+      const index = detail.querySelector('[data-campus-detail-index]');
+      const category = detail.querySelector('[data-campus-detail-category]');
+      const title = detail.querySelector('[data-campus-detail-title]');
+      const description = detail.querySelector('[data-campus-detail-description]');
+      const detailLinks = detail.querySelector('[data-campus-detail-links]');
+
+      function renderDetailLinks(record) {
+        if (!detailLinks) return;
+        detailLinks.replaceChildren();
+        const links = [];
+        if (record.video) links.push(['WATCH VIDEO', record.video]);
+        if (record.links) links.push(...record.links);
+        detailLinks.hidden = links.length === 0;
+        links.forEach(([label, href]) => {
+          const link = document.createElement('a');
+          link.href = href;
+          link.target = '_blank';
+          link.rel = 'noreferrer';
+          link.textContent = `${label} ↗`;
+          detailLinks.appendChild(link);
+        });
+      }
+
+      function openDetail(recordIndex) {
+        const record = records[recordIndex];
+        if (!record) return;
+        selectedIndex = recordIndex;
+        image.src = asset(record.image);
+        image.alt = record.title;
+        index.textContent = `${String(recordIndex + 1).padStart(2, '0')} / ${String(records.length).padStart(2, '0')}`;
+        category.textContent = record.category;
+        title.textContent = record.title;
+        description.textContent = record.description;
+        renderDetailLinks(record);
+        detail.classList.add('is-open');
+        detail.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('campus-detail-open');
+      }
+
+      function closeDetail() {
+        detail.classList.remove('is-open');
+        detail.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('campus-detail-open');
+        selectedIndex = -1;
+      }
+
+      detail.querySelector('[data-campus-close]').addEventListener('click', closeDetail);
+      detail.addEventListener('click', (event) => { if (event.target === detail) closeDetail(); });
+      window.addEventListener('keydown', (event) => { if (event.key === 'Escape' && selectedIndex >= 0) closeDetail(); });
+      window.addEventListener('resize', measure);
+      measure();
+      render();
+    })();
+  </script>
+</body>
+</html>

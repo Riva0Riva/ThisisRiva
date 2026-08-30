@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="极简土豆 Minimal TODO：从一条消息，到一个可执行的行动。" />
+  <title>极简土豆 · Minimal TODO</title>
+  <style>
+    :root {
+      --mt-ink:#21372d;
+      --mt-green:#2f654d;
+      --mt-mid:#668574;
+      --mt-pale:#e3eddd;
+      --mt-cream:#f5f0e6;
+      --mt-paper:#fffdf8;
+      --mt-apricot:#ef9977;
+      --mt-yellow:#fff0c9;
+      --mt-line:#dbe2d9;
+      --mt-shadow:0 28px 90px rgba(44,61,51,.14);
+    }
+    * { box-sizing:border-box; }
+    html { background:var(--mt-cream); }
+    body { margin:0; background:var(--mt-cream); color:var(--mt-ink); font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif; }
+    button { font:inherit; }
+    .mt-case { min-height:100vh; overflow:hidden; background:
+      radial-gradient(circle at 80% 14%, rgba(242,197,119,.22), transparent 26%),
+      radial-gradient(circle at 8% 84%, rgba(116,153,126,.16), transparent 30%),
+      var(--mt-cream); }
+    .mt-shell { width:min(1240px,calc(100% - 48px)); margin:0 auto; padding:58px 0 68px; }
+    .mt-grid { display:grid; grid-template-columns:minmax(400px,1fr) minmax(400px,540px); align-items:center; gap:54px; }
+    .mt-kicker { margin:0 0 22px; color:var(--mt-mid); font-size:14px; font-weight:800; letter-spacing:2.6px; }
+    .mt-title { margin:0; font-size:clamp(58px,7vw,104px); line-height:.96; letter-spacing:-.05em; }
+    .mt-en { display:block; margin-top:22px; color:var(--mt-mid); font-size:clamp(24px,2.5vw,38px); font-weight:560; letter-spacing:.12em; }
+    .mt-lede { max-width:660px; margin:36px 0 0; font-size:clamp(24px,2.6vw,36px); font-weight:700; line-height:1.38; letter-spacing:-.025em; }
+    .mt-lede em { color:var(--mt-apricot); font-style:normal; }
+    .mt-summary { max-width:640px; margin:20px 0 0; color:#63736a; font-size:17px; line-height:1.75; }
+    .mt-summary em { color:var(--mt-green); font-style:normal; font-weight:700; }
+    .mt-proof { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:30px 0 0; }
+    .mt-proof article { min-height:136px; padding:18px; border:1px solid var(--mt-line); border-radius:20px; background:rgba(255,253,248,.82); box-shadow:0 14px 34px rgba(54,67,58,.06); }
+    .mt-proof span { color:var(--mt-apricot); font-size:12px; font-weight:800; letter-spacing:1.3px; }
+    .mt-proof strong { display:block; margin-top:12px; font-size:19px; }
+    .mt-proof p { margin:8px 0 0; color:#718078; font-size:14px; line-height:1.55; }
+    .mt-steps { display:flex; flex-wrap:wrap; gap:10px; margin-top:34px; }
+    .mt-step { appearance:none; padding:11px 16px; border:1px solid #cbd6cd; border-radius:999px; background:rgba(255,253,248,.72); color:#617067; cursor:pointer; transition:.2s ease; }
+    .mt-step:hover { border-color:#799585; transform:translateY(-1px); }
+    .mt-step.is-active { border-color:var(--mt-green); background:var(--mt-green); color:white; box-shadow:0 9px 20px rgba(47,101,77,.18); }
+    .mt-caption { min-height:54px; margin:18px 0 0; color:#68776f; font-size:16px; line-height:1.65; }
+    .mt-meta { display:flex; gap:24px; margin-top:20px; color:#7b877f; font-size:13px; letter-spacing:.04em; }
+
+    .mt-stage { position:relative; display:grid; place-items:center; min-height:780px; }
+    .mt-orbit { position:absolute; width:610px; height:610px; border:1px solid rgba(88,120,100,.18); border-radius:50%; }
+    .mt-orbit::before,.mt-orbit::after { content:""; position:absolute; border-radius:50%; background:#f0c978; box-shadow:0 0 0 12px rgba(240,201,120,.12); }
+    .mt-orbit::before { width:16px; height:16px; top:82px; right:60px; }
+    .mt-orbit::after { width:10px; height:10px; bottom:95px; left:28px; background:#7da08a; }
+
+    .mt-device { position:relative; width:414px; height:868px; padding:12px; border-radius:58px; background:linear-gradient(145deg,#3a3d3b,#111412 68%); box-shadow:0 50px 110px rgba(34,42,37,.32),inset 0 0 0 2px rgba(255,255,255,.16); transform:scale(.86); transform-origin:center; }
+    .mt-device::before { content:""; position:absolute; left:-4px; top:154px; width:4px; height:66px; border-radius:4px 0 0 4px; background:#171a18; box-shadow:0 82px 0 #171a18; }
+    .mt-device::after { content:""; position:absolute; right:-4px; top:215px; width:4px; height:106px; border-radius:0 4px 4px 0; background:#171a18; }
+    .mt-screen { position:relative; width:390px; height:844px; overflow:hidden; border-radius:47px; background:#f7f6f3; }
+    .mt-notch { position:absolute; z-index:30; top:0; left:50%; width:210px; height:31px; transform:translateX(-50%); border-radius:0 0 20px 20px; background:#080a09; }
+    .mt-notch::after { content:""; position:absolute; right:42px; top:8px; width:7px; height:7px; border-radius:50%; background:#1f2930; box-shadow:inset 0 0 0 2px #10171b; }
+    .mt-status { position:absolute; z-index:20; top:0; left:0; width:100%; height:47px; padding:14px 23px 0; display:flex; justify-content:space-between; color:#111; font-size:14px; font-weight:700; }
+    .mt-status-icons { display:flex; align-items:center; gap:7px; }
+    .mt-signal { display:flex; align-items:flex-end; gap:2px; height:13px; }
+    .mt-signal i { display:block; width:3px; border-radius:2px; background:#111; }
+    .mt-signal i:nth-child(1){height:5px}.mt-signal i:nth-child(2){height:8px}.mt-signal i:nth-child(3){height:11px}.mt-signal i:nth-child(4){height:13px}
+    .mt-wifi { position:relative; width:16px; height:12px; border-top:2px solid #111; border-radius:50%; }
+    .mt-wifi::before,.mt-wifi::after { content:""; position:absolute; left:50%; transform:translateX(-50%); border-top:2px solid #111; border-radius:50%; }
+    .mt-wifi::before { top:3px; width:11px; height:7px; }.mt-wifi::after { top:7px; width:4px; height:3px; }
+    .mt-battery { position:relative; width:24px; height:11px; border:1.5px solid #111; border-radius:3px; }
+    .mt-battery::before { content:""; position:absolute; left:2px; top:2px; width:15px; height:5px; border-radius:1px; background:#111; }
+    .mt-battery::after { content:""; position:absolute; right:-4px; top:3px; width:2px; height:5px; border-radius:0 2px 2px 0; background:#111; }
+
+    .mt-wxbar { position:absolute; z-index:18; top:47px; left:0; width:100%; height:52px; display:flex; align-items:center; justify-content:center; background:rgba(247,246,243,.96); border-bottom:1px solid #e9e8e4; }
+    .mt-back { position:absolute; left:17px; top:15px; width:15px; height:15px; border-left:2px solid #111; border-bottom:2px solid #111; transform:rotate(45deg); }
+    .mt-wx-title { font-size:16px; font-weight:650; }
+    .mt-capsule { position:absolute; right:12px; top:9px; width:86px; height:34px; display:flex; align-items:center; justify-content:space-evenly; border:1px solid #ddd; border-radius:18px; background:rgba(255,255,255,.72); }
+    .mt-dots { letter-spacing:1px; font-size:17px; line-height:1; }
+    .mt-capsule-line { width:1px; height:18px; background:#ddd; }
+    .mt-mini-circle { width:17px; height:17px; border:2px solid #111; border-radius:50%; box-shadow:inset 0 0 0 3px white,inset 0 0 0 5px #111; }
+
+    .mt-app { position:absolute; z-index:5; top:99px; bottom:64px; left:0; width:100%; overflow:hidden; background:#f6f1e7; }
+    .mt-app-screen { position:absolute; inset:0; padding:20px 18px; overflow:hidden; opacity:0; pointer-events:none; transform:translateX(20px); transition:opacity .28s ease,transform .28s ease; }
+    .mt-app-screen.is-active { opacity:1; pointer-events:auto; transform:translateX(0); }
+    .mt-page-kicker { margin:0 0 8px; color:#668574; font-size:10px; font-weight:800; letter-spacing:1.5px; }
+    .mt-page-title { margin:0; font-size:29px; line-height:1.12; letter-spacing:-.03em; }
+    .mt-page-title em { color:#e28c6c; font-style:normal; }
+    .mt-page-sub { margin:10px 0 0; color:#78847d; font-size:12px; line-height:1.55; }
+    .mt-companion { position:relative; margin-top:16px; min-height:118px; padding:18px 126px 18px 18px; border-radius:24px; background:linear-gradient(135deg,#dfeadb,#f5e6bd); }
+    .mt-companion strong { display:block; margin-top:4px; font-size:17px; line-height:1.35; }
+    .mt-companion p { margin:7px 0 0; color:#607067; font-size:11px; line-height:1.5; }
+    .mt-companion img { position:absolute; right:20px; bottom:6px; width:92px; height:92px; object-fit:contain; }
+    .mt-progress { position:absolute; left:18px; right:18px; bottom:14px; height:5px; border-radius:3px; background:rgba(255,255,255,.7); }
+    .mt-progress i { display:block; width:48%; height:100%; border-radius:3px; background:#688b76; }
+    .mt-section-head { display:flex; align-items:center; justify-content:space-between; margin-top:19px; }
+    .mt-section-head strong { font-size:15px; }.mt-section-head span{color:#768279;font-size:11px}
+    .mt-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+    .mt-action { min-height:72px; padding:13px; border:1px solid #dde4db; border-radius:18px; background:#fffdf8; text-align:left; color:var(--mt-ink); cursor:pointer; }
+    .mt-action b { display:block; font-size:13px; }.mt-action small{display:block;margin-top:5px;color:#88928c;font-size:10px}
+    .mt-action-icon { float:right; width:27px; height:27px; display:grid; place-items:center; border-radius:50%; background:#e4eddf; color:#52735f; font-size:15px; }
+    .mt-task { display:grid; grid-template-columns:27px 1fr auto; gap:9px; align-items:center; margin-top:10px; padding:13px; border:1px solid #dce3da; border-radius:17px; background:#fffdf8; }
+    .mt-check { width:24px; height:24px; display:grid; place-items:center; border:1.5px solid #73917f; border-radius:50%; color:white; background:transparent; font-size:13px; }
+    .mt-task.is-done .mt-check { background:#73917f; }.mt-task.is-done strong{text-decoration:line-through;color:#89928d}
+    .mt-task strong { display:block; font-size:12px; line-height:1.35; }.mt-task small{display:block;margin-top:5px;color:#8a938d;font-size:9px}
+    .mt-points { color:#df8e70; font-size:11px; font-weight:700; }
+
+    .mt-sheet-screen { padding:0; background:rgba(29,39,33,.28); }
+    .mt-ghost-home { position:absolute; inset:0; padding:20px 18px; filter:blur(1.6px); opacity:.62; }
+    .mt-ghost-home::before { content:""; display:block; width:58%; height:28px; border-radius:8px; background:#d7dfd4; box-shadow:0 54px 0 18px #dfe7d8,0 178px 0 55px #fffdf8,0 344px 0 15px #fffdf8; }
+    .mt-sheet { position:absolute; left:0; right:0; bottom:0; min-height:612px; padding:18px 18px 24px; border-radius:28px 28px 0 0; background:#fffdf8; box-shadow:0 -18px 50px rgba(33,48,39,.18); }
+    .mt-handle { width:38px; height:4px; margin:0 auto 18px; border-radius:2px; background:#d8d8d2; }
+    .mt-sheet-head { display:flex; align-items:center; justify-content:space-between; }
+    .mt-sheet-head span { color:#7a867e; font-size:11px; }.mt-sheet-head b{font-size:19px}
+    .mt-tabs { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:16px; padding:5px; border-radius:14px; background:#f0eee8; }
+    .mt-tabs span { padding:9px; border-radius:10px; text-align:center; color:#758078; font-size:11px; }.mt-tabs .is-on{background:white;color:#2d5e48;font-weight:700;box-shadow:0 2px 8px rgba(40,50,43,.08)}
+    .mt-textarea { min-height:245px; margin-top:14px; padding:16px; border:1px solid #dde3db; border-radius:18px; background:#f5f1e8; color:#35483e; font-size:11px; line-height:1.75; }
+    .mt-highlight { display:inline-block; padding:1px 5px; border-radius:5px; background:#fff0c9; color:#5f4d30; font-weight:700; }
+    .mt-ai-note { display:flex; gap:10px; margin-top:12px; padding:12px; border-radius:14px; background:#e5eee2; color:#5c7064; font-size:10px; line-height:1.5; }
+    .mt-ai-dot { flex:0 0 22px; width:22px; height:22px; display:grid; place-items:center; border-radius:50%; background:#71947f; color:white; font-weight:800; }
+    .mt-primary { width:100%; margin-top:14px; padding:14px; border:0; border-radius:14px; background:#2f654d; color:white; font-size:13px; font-weight:750; cursor:pointer; box-shadow:0 8px 18px rgba(47,101,77,.18); }
+
+    .mt-review-sheet { min-height:681px; }
+    .mt-review-meta { display:flex; justify-content:space-between; margin-top:10px; color:#e28c6c; font-size:10px; }
+    .mt-field { margin-top:10px; }
+    .mt-field label { display:block; margin-bottom:5px; color:#7b867f; font-size:9px; }
+    .mt-input { min-height:42px; padding:12px 13px; border:1px solid #dfe4dc; border-radius:13px; background:#f5f1e8; color:#2f4137; font-size:11px; line-height:1.45; }
+    .mt-field-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .mt-note-field .mt-input { min-height:58px; color:#66746c; }
+    .mt-privacy { margin:9px 0 0; color:#8c958f; font-size:9px; line-height:1.5; }
+
+    .mt-complete-card { margin-top:18px; padding:18px; border-radius:24px; background:linear-gradient(135deg,#f6e6c2,#e4eddb); text-align:center; }
+    .mt-complete-card img { width:108px; height:108px; object-fit:contain; }
+    .mt-complete-card span { display:block; margin-top:5px; color:#e18b6c; font-size:10px; font-weight:800; letter-spacing:1.2px; }
+    .mt-complete-card strong { display:block; margin-top:8px; font-size:19px; }
+    .mt-complete-card p { margin:6px 0 0; color:#6a776f; font-size:11px; }
+    .mt-space-preview { display:flex; align-items:center; gap:12px; margin-top:13px; padding:13px; border:1px solid #dce3da; border-radius:18px; background:#fffdf8; }
+    .mt-space-preview i { width:42px; height:42px; border-radius:14px; background:linear-gradient(135deg,#dbe8d8,#f6e6bd); }
+    .mt-space-preview strong { display:block; font-size:12px; }.mt-space-preview span{display:block;margin-top:4px;color:#7e8982;font-size:9px}
+
+    .mt-tabbar { position:absolute; z-index:16; left:0; right:0; bottom:0; height:64px; display:grid; grid-template-columns:1fr 1fr; background:rgba(255,255,255,.96); border-top:1px solid #e4e5e1; }
+    .mt-tabitem { display:grid; place-items:center; align-content:center; gap:3px; color:#929993; font-size:9px; }
+    .mt-tabitem b { font-size:18px; line-height:1; font-weight:500; }.mt-tabitem.is-active{color:#356b51}
+    .mt-home-indicator { position:absolute; z-index:32; left:50%; bottom:5px; width:134px; height:5px; transform:translateX(-50%); border-radius:3px; background:#111; opacity:.88; }
+
+    .mt-footer-note { margin-top:70px; padding-top:24px; border-top:1px solid rgba(75,96,82,.18); display:flex; justify-content:space-between; gap:30px; color:#758178; font-size:13px; }
+    .mt-thesis { display:grid; grid-template-columns:minmax(300px,.9fr) minmax(360px,1.1fr); gap:72px; margin-top:78px; padding:54px 0 0; border-top:1px solid rgba(75,96,82,.18); }
+    .mt-thesis > div:first-child > span { color:var(--mt-apricot); font-size:12px; font-weight:800; letter-spacing:1.8px; }
+    .mt-thesis h2 { max-width:590px; margin:18px 0 0; font-size:clamp(30px,3vw,48px); line-height:1.12; letter-spacing:-.035em; }
+    .mt-thesis-copy { color:#63736a; font-size:16px; line-height:1.8; }
+    .mt-thesis-copy p { margin:0 0 18px; }
+    .mt-thesis-copy p:last-child { margin-bottom:0; }
+    .mt-feedback-note { padding-top:18px; border-top:1px solid rgba(75,96,82,.14); }
+    .mt-feedback-note strong { color:var(--mt-green); }
+
+    @media (max-width:1100px) {
+      .mt-shell { padding-top:48px; }
+      .mt-grid { grid-template-columns:1fr; gap:42px; }
+      .mt-copy { max-width:760px; margin:0 auto; }
+      .mt-stage { min-height:780px; }
+      .mt-thesis { grid-template-columns:1fr; gap:28px; }
+    }
+    @media (max-width:650px) {
+      .mt-shell { width:min(calc(100% - 28px),540px); padding:30px 0 48px; }
+      .mt-grid { min-width:0; gap:26px; }
+      .mt-copy { min-width:0; }
+      .mt-kicker { font-size:9px; letter-spacing:1.5px; }
+      .mt-title { font-size:clamp(44px,15vw,58px); }.mt-en{font-size:21px}.mt-lede{margin-top:26px;font-size:clamp(22px,7.1vw,27px);line-height:1.28}.mt-summary{font-size:14px;line-height:1.65}
+      .mt-proof { grid-template-columns:1fr; gap:8px; }.mt-proof article{min-height:auto;padding:14px}.mt-proof strong{font-size:17px}.mt-proof p{font-size:13px}
+      .mt-steps { gap:8px; margin-top:26px; }.mt-step { flex:1 1 calc(50% - 8px); min-width:0; padding:9px 10px; font-size:11px; white-space:nowrap; }
+      .mt-caption { min-height:auto; font-size:14px; line-height:1.5; }
+      .mt-meta { flex-direction:column; gap:7px; font-size:11px; line-height:1.45; }
+      .mt-stage { min-width:0; width:100%; min-height:620px; margin-top:0; overflow:hidden; }
+      .mt-device { transform:scale(.66); transform-origin:center; }
+      .mt-orbit { width:360px; height:360px; }
+      .mt-thesis { margin-top:58px; padding-top:36px; }
+      .mt-thesis-copy { font-size:15px; }
+      .mt-footer-note { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="mt-case" id="minimal-todo-case">
+    <section class="mt-shell">
+      <div class="mt-grid">
+        <div class="mt-copy">
+          <p class="mt-kicker">CONSUMER AI · WECHAT MINI PROGRAM · 0→1 MVP</p>
+          <h1 class="mt-title">极简土豆<span class="mt-en">MINIMAL TODO</span></h1>
+          <p class="mt-lede">从一条消息，到一个可执行的行动。</p>
+          <p class="mt-summary">一个面向微信场景的 AI 任务捕捉工具。它将通知、群聊内容和语音输入中的非结构化信息，转化为经过用户确认的待办、时间和提醒。<em>AI 负责理解与整理，用户保留最终决定权。</em></p>
+
+          <div class="mt-proof">
+            <article><span>WHY WECHAT</span><strong>把信息放进行动流</strong><p>微信本来就是通知与沟通发生的地方，不必切换到陌生工具。</p></article>
+            <article><span>WHY AI</span><strong>减少创建成本</strong><p>AI 提取事件、时间、地点与链接，让复杂信息先被整理。</p></article>
+            <article><span>HUMAN GATE</span><strong>保留最终决定权</strong><p>模型只给出结构化候选结果，用户确认后才保存为待办。</p></article>
+          </div>
+
+          <nav class="mt-steps" aria-label="切换产品流程">
+            <button class="mt-step is-active" type="button" data-step="0">01 今日</button>
+            <button class="mt-step" type="button" data-step="1">02 复制通知</button>
+            <button class="mt-step" type="button" data-step="2">03 AI 确认</button>
+            <button class="mt-step" type="button" data-step="3">04 完成反馈</button>
+          </nav>
+          <p class="mt-caption" id="mt-caption">把信息转成行动，先从一个熟悉的入口开始。</p>
+          <div class="mt-meta"><span>Role · 产品定义 / AI 机制 / UX / MVP</span><span>Stage · Native MVP / Testing</span></div>
+        </div>
+
+        <div class="mt-stage">
+          <div class="mt-orbit" aria-hidden="true"></div>
+          <div class="mt-device" aria-label="iPhone 13 Pro 微信小程序原型">
+            <div class="mt-screen">
+              <div class="mt-notch"></div>
+              <div class="mt-status"><span>9:41</span><span class="mt-status-icons"><span class="mt-signal"><i></i><i></i><i></i><i></i></span><span class="mt-wifi"></span><span class="mt-battery"></span></span></div>
+              <div class="mt-wxbar"><i class="mt-back"></i><span class="mt-wx-title">极简土豆</span><span class="mt-capsule"><b class="mt-dots">•••</b><i class="mt-capsule-line"></i><i class="mt-mini-circle"></i></span></div>
+
+              <section class="mt-app">
+                <div class="mt-app-screen is-active" data-screen="0">
+                  <p class="mt-page-kicker">TODAY / 今天</p>
+                  <h2 class="mt-page-title">把今天，<br><em>过得轻一点。</em></h2>
+                  <div class="mt-companion">
+                    <small>你的今日伙伴</small><strong>小土豆在等你<br>完成一件小事。</strong><p>Lv. 3 · 12/25 成长值</p>
+                    <img src="assets/pet-cat.png" alt="小土豆猫咪" />
+                    <span class="mt-progress"><i></i></span>
+                  </div>
+                  <div class="mt-section-head"><strong>快速添加</strong><span>不用一项项填写</span></div>
+                  <div class="mt-actions">
+                    <button class="mt-action" type="button" data-go="1"><span class="mt-action-icon">⌁</span><b>粘贴通知</b><small>复制一整段消息</small></button>
+                    <button class="mt-action" type="button" data-go="1"><span class="mt-action-icon">⌁</span><b>说给我听</b><small>按住说出待办</small></button>
+                  </div>
+                  <div class="mt-section-head"><strong>今天要做的事</strong><span>2 件</span></div>
+                  <div class="mt-task"><span class="mt-check"></span><div><strong>提交党员先锋队报名</strong><small>今天 23:59 · 提前1天提醒</small></div><span class="mt-points">+2</span></div>
+                </div>
+
+                <div class="mt-app-screen mt-sheet-screen" data-screen="1">
+                  <div class="mt-ghost-home"></div>
+                  <div class="mt-sheet">
+                    <div class="mt-handle"></div>
+                    <div class="mt-sheet-head"><b>快速添加</b><span>关闭</span></div>
+                    <div class="mt-tabs"><span class="is-on">粘贴文字</span><span>语音输入</span></div>
+                    <div class="mt-textarea">各位同志，上午好！2026年迎新学生党员先锋队现已开始招募。<br><br>1. 服务时间：8.30–9.1，可自选服务场次<br>2. <span class="mt-highlight">报名截止时间：8月20日24点</span><br>工作群：666<br><br>完整通知推文：https://mp.weixin.qq.com/...</div>
+                    <div class="mt-ai-note"><span class="mt-ai-dot">AI</span><span>系统将识别事件、截止时间、地点和链接；保存前仍由你确认。</span></div>
+                    <button class="mt-primary" type="button" data-go="2">开始识别</button>
+                  </div>
+                </div>
+
+                <div class="mt-app-screen mt-sheet-screen" data-screen="2">
+                  <div class="mt-ghost-home"></div>
+                  <div class="mt-sheet mt-review-sheet">
+                    <div class="mt-handle"></div>
+                    <div class="mt-sheet-head"><b>确认内容</b><span>关闭</span></div>
+                    <div class="mt-review-meta"><span>待办 1</span><span>预计 +2 成长值</span></div>
+                    <div class="mt-field"><label>要做什么</label><div class="mt-input">报名迎新学生党员先锋队</div></div>
+                    <div class="mt-field-row">
+                      <div class="mt-field"><label>截止日期</label><div class="mt-input">8月20日</div></div>
+                      <div class="mt-field"><label>截止时间</label><div class="mt-input">23:59</div></div>
+                    </div>
+                    <div class="mt-field"><label>地点</label><div class="mt-input">未识别，可留空</div></div>
+                    <div class="mt-field mt-note-field"><label>备注</label><div class="mt-input">服务时间：8.30–9.1<br>工作群：666</div></div>
+                    <div class="mt-field-row">
+                      <div class="mt-field"><label>提醒</label><div class="mt-input">提前1天</div></div>
+                      <div class="mt-field"><label>难度</label><div class="mt-input">普通</div></div>
+                    </div>
+                    <p class="mt-privacy">默认不保存通知原文；只有确认后的结构化字段会进入待办。</p>
+                    <button class="mt-primary" type="button" data-go="3">确认并保存</button>
+                  </div>
+                </div>
+
+                <div class="mt-app-screen" data-screen="3">
+                  <p class="mt-page-kicker">TASK COMPLETE / 做得好</p>
+                  <h2 class="mt-page-title">完成本身，<br><em>就值得庆祝。</em></h2>
+                  <div class="mt-task is-done"><span class="mt-check">✓</span><div><strong>报名迎新学生党员先锋队</strong><small>今天 18:34 完成</small></div><span class="mt-points">已获得</span></div>
+                  <div class="mt-complete-card">
+                    <img src="assets/pet-cat.png" alt="小土豆庆祝" />
+                    <span>+2 GROWTH</span><strong>小土豆很开心。</strong><p>没有额外喂养，也没有逾期惩罚。</p>
+                  </div>
+                  <div class="mt-space-preview"><i></i><div><strong>距离下一件装饰还差 11 点</strong><span>每一次完成，都让空间更像家。</span></div></div>
+                  <button class="mt-primary" type="button" data-go="0">回到今日</button>
+                </div>
+              </section>
+
+              <nav class="mt-tabbar" aria-label="小程序底部导航"><span class="mt-tabitem is-active"><b>⌂</b>今日</span><span class="mt-tabitem"><b>♧</b>空间</span></nav>
+              <div class="mt-home-indicator"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="mt-thesis" aria-label="产品思考">
+        <div>
+          <span>THE PRODUCT QUESTION</span>
+          <h2>降低创建待办的成本，而不是增加另一个复杂工具。</h2>
+        </div>
+        <div class="mt-thesis-copy">
+          <p>真实世界中的任务，往往已经存在于一段通知、一条群消息或一句口头表达中。用户真正缺少的不是记录能力，而是把非结构化信息转化为行动的能力。</p>
+          <p>因此，极简土豆采用“自然语言输入 → AI 信息抽取 → 用户确认 → 提醒执行”的产品链路。AI 处理重复性的理解和结构化工作，但不替用户做最终决定。</p>
+          <p class="mt-feedback-note"><strong>可选的情绪反馈层：</strong>完成任务后，用户通过成长值逐步解锁空间装饰，让抽象的完成感变成可见的长期变化。宠物不是产品入口，而是完成行为之后的正向反馈。</p>
+        </div>
+      </section>
+
+      <footer class="mt-footer-note"><span>极简土豆 Minimal TODO · AI Task Capture for WeChat</span><span>AI 理解与整理 · 用户确认与决定 · 失败不阻断</span></footer>
+    </section>
+  </main>
+  <script>
+    (() => {
+      const captions = [
+        '把粘贴和语音入口放在任务附近，让信息更快进入行动流。',
+        '用户只需粘贴一段消息，或直接说出一句话，不必先整理内容。',
+        'AI 提取事件、截止时间、地点和链接；用户确认后再保存为待办。',
+        '完成任务后获得可选的正向反馈，但陪伴机制不影响核心效率功能。'
+      ];
+      const steps = [...document.querySelectorAll('.mt-step')];
+      const screens = [...document.querySelectorAll('.mt-app-screen')];
+      const caption = document.querySelector('#mt-caption');
+      function show(index) {
+        screens.forEach((screen, i) => screen.classList.toggle('is-active', i === index));
+        steps.forEach((step, i) => step.classList.toggle('is-active', i === index));
+        caption.textContent = captions[index];
+      }
+      steps.forEach(step => step.addEventListener('click', () => show(Number(step.dataset.step))));
+      document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => show(Number(button.dataset.go))));
+    })();
+  </script>
+</body>
+</html>

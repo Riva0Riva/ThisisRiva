@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Riva's product case studies and multimedia work.">
+  <title>Portfolio / Riva</title>
+  <link rel="stylesheet" href="section-page.css">
+</head>
+<body class="portfolio-page-body">
+  <main class="section-page portfolio-page">
+    <header class="section-top portfolio-top">
+      <a class="section-brand" href="index.html">PORTFOLIO RIVA</a>
+      <div class="portfolio-top-meta">
+        <span class="portfolio-top-label">STATION 02</span>
+        <a class="back-route" href="index.html">← BACK TO ROUTE</a>
+      </div>
+    </header>
+
+    <section class="portfolio-intro" aria-labelledby="portfolio-title">
+      <div class="portfolio-intro-copy">
+        <p class="portfolio-kicker">PRODUCT THINKING · VISUAL STORYTELLING</p>
+        <h1 id="portfolio-title"><span>WORK</span><span>IN MOTION.</span></h1>
+        <p class="portfolio-lede">A collection of product ideas, visual studies and the questions that shape them.</p>
+      </div>
+      <div class="portfolio-intro-mark" aria-hidden="true">02</div>
+    </section>
+
+    <section class="portfolio-case" aria-labelledby="minimal-todo-title">
+      <div class="portfolio-section-heading">
+        <p>01 / PRODUCT CASE</p>
+        <div>
+          <h2 id="minimal-todo-title">MINIMAL TODO</h2>
+          <span>CONSUMER AI · WECHAT · 0→1 MVP</span>
+        </div>
+      </div>
+      <div class="portfolio-case-frame">
+        <iframe src="portfolio-minimal-potato/case-study.html" title="Minimal TODO product case study" loading="eager" scrolling="yes"></iframe>
+      </div>
+      <div class="portfolio-case-foot">
+        <span>AI THAT TURNS NOTIFICATIONS INTO ACTION</span>
+      </div>
+    </section>
+
+    <section class="portfolio-case" aria-labelledby="ifoundation-title" data-case="ifoundation">
+      <div class="portfolio-section-heading">
+        <p>02 / FLAGSHIP PRODUCT CASE</p>
+        <div>
+          <h2 id="ifoundation-title">I-FOUNDATION</h2>
+          <span>AI BEAUTY · SMART HARDWARE · PATENTED PROJECT</span>
+        </div>
+      </div>
+      <div class="portfolio-case-frame portfolio-ifoundation-frame" data-scroll-frame="ifoundation">
+        <iframe src="portfolio-ifoundation/case-study.html" title="I-Foundation AI 定制粉底系统产品案例" loading="eager" scrolling="yes"></iframe>
+      </div>
+      <div class="portfolio-case-foot">
+        <span>AI THAT MEASURES PERSONALIZATION · PUBLIC EDITION</span>
+        <span>IP STATUS / 已获专利</span>
+      </div>
+    </section>
+
+    <section class="portfolio-gallery" data-parallax-gallery aria-labelledby="gallery-title">
+      <div class="portfolio-section-heading portfolio-gallery-heading">
+        <p>03 / IMAGE WORKS</p>
+        <div>
+          <h2 id="gallery-title">A WIDER VIEW.</h2>
+          <span>PHOTOGRAPHY · VISUAL DESIGN</span>
+        </div>
+      </div>
+
+      <div class="portfolio-gallery-window">
+        <div class="portfolio-gallery-track" data-gallery-track>
+          <figure class="portfolio-gallery-item" style="--item-ratio:.78">
+            <img src="assets/摄影作品/717.JPG" alt="Photography work 01" loading="lazy">
+            <figcaption><span>01</span><strong>PAUSE / MOTION</strong></figcaption>
+          </figure>
+          <figure class="portfolio-gallery-item" style="--item-ratio:.76">
+            <img src="assets/摄影作品/a21d04bd3u685e8b9177c0e4f9b786aa.JPG" alt="Photography work 02" loading="lazy">
+            <figcaption><span>02</span><strong>SHAPE / AIR</strong></figcaption>
+          </figure>
+          <figure class="portfolio-gallery-item" style="--item-ratio:.83">
+            <img src="assets/摄影作品/d84ebfca7u5a4b1a700b06094e56cff2.JPG" alt="Photography work 03" loading="lazy">
+            <figcaption><span>03</span><strong>COLOUR / TRACE</strong></figcaption>
+          </figure>
+          <figure class="portfolio-gallery-item portfolio-design-item" style="--item-ratio:1.45">
+            <img src="assets/portfolio-design/kt-board-design.jpg" alt="KT board visual design" loading="lazy">
+            <figcaption><span>04</span><strong>KT BOARD / VISUAL SYSTEM</strong></figcaption>
+          </figure>
+          <figure class="portfolio-gallery-item portfolio-design-item" style="--item-ratio:1.25">
+            <img src="assets/portfolio-design/cultural-creative-design.png" alt="Cultural creative product design" loading="lazy">
+            <figcaption><span>05</span><strong>CULTURAL / CREATIVE OBJECTS</strong></figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="portfolio-gallery-footer">
+        <span>DRAG / SCROLL HORIZONTALLY · IMAGE WORKS ONLY</span>
+        <span data-gallery-progress>01 / 05</span>
+      </div>
+    </section>
+
+    <footer class="portfolio-footer">
+      <span>PRODUCT · IMAGE · MEANING</span>
+      <a href="index.html">RETURN TO ROUTE ↗</a>
+    </footer>
+  </main>
+
+  <script>
+    (() => {
+      const gallery = document.querySelector('[data-parallax-gallery]');
+      const track = gallery?.querySelector('[data-gallery-track]');
+      const originals = track ? [...track.children] : [];
+      const progress = gallery?.querySelector('[data-gallery-progress]');
+      if (!gallery || !track || !originals.length) return;
+
+      const clones = originals.map((item) => {
+        const clone = item.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        return clone;
+      });
+      clones.forEach((clone) => track.appendChild(clone));
+      const items = [...originals, ...clones];
+
+      let targetX = 0;
+      let currentX = 0;
+      let pointerDown = false;
+      let dragStart = 0;
+      let dragOrigin = 0;
+
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const loopWidth = () => {
+        if (!originals.length || !clones.length) return 0;
+        return clones[0].getBoundingClientRect().left - originals[0].getBoundingClientRect().left;
+      };
+      const moveTo = (value) => { targetX = value; };
+
+      function normalizeLoop() {
+        const span = loopWidth();
+        if (!span) return;
+        if (targetX >= span || currentX >= span) {
+          targetX -= span;
+          currentX -= span;
+        } else if (targetX < 0 || currentX < 0) {
+          targetX += span;
+          currentX += span;
+        }
+      }
+
+      function render() {
+        currentX += (targetX - currentX) * 0.12;
+        if (Math.abs(targetX - currentX) < 0.05) currentX = targetX;
+        normalizeLoop();
+        track.style.transform = `translate3d(${-currentX.toFixed(2)}px, 0, 0)`;
+
+        const galleryRect = gallery.getBoundingClientRect();
+        const center = galleryRect.left + gallery.clientWidth / 2;
+        let activeIndex = 0;
+        let closestDistance = Infinity;
+
+        items.forEach((item, index) => {
+          const rect = item.getBoundingClientRect();
+          const itemCenter = rect.left + rect.width / 2;
+          const distance = Math.abs(itemCenter - center);
+          const parallax = clamp((itemCenter - center) * -0.045, -34, 34);
+          item.style.setProperty('--parallax-x', `${parallax.toFixed(2)}px`);
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            activeIndex = index % originals.length;
+          }
+        });
+
+        if (progress) progress.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(originals.length).padStart(2, '0')}`;
+        requestAnimationFrame(render);
+      }
+
+      gallery.addEventListener('wheel', (event) => {
+        if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+        event.preventDefault();
+        moveTo(targetX + event.deltaX * 0.9);
+      }, { passive: false });
+
+      gallery.addEventListener('pointerdown', (event) => {
+        if (event.pointerType !== 'mouse') return;
+        pointerDown = true;
+        dragStart = event.clientX;
+        dragOrigin = targetX;
+        gallery.setPointerCapture(event.pointerId);
+        gallery.classList.add('is-dragging');
+      });
+
+      gallery.addEventListener('pointermove', (event) => {
+        if (pointerDown) moveTo(dragOrigin - (event.clientX - dragStart));
+      });
+
+      const endDrag = (event) => {
+        pointerDown = false;
+        if (event.pointerId !== undefined && gallery.hasPointerCapture(event.pointerId)) gallery.releasePointerCapture(event.pointerId);
+        gallery.classList.remove('is-dragging');
+      };
+
+      gallery.addEventListener('pointerup', endDrag);
+      gallery.addEventListener('pointercancel', endDrag);
+      window.addEventListener('resize', () => moveTo(targetX));
+      render();
+    })();
+  </script>
+</body>
+</html>
