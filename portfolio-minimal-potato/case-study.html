@@ -169,9 +169,10 @@
       .mt-steps { gap:8px; margin-top:26px; }.mt-step { flex:1 1 calc(50% - 8px); min-width:0; padding:9px 10px; font-size:11px; white-space:nowrap; }
       .mt-caption { min-height:auto; font-size:14px; line-height:1.5; }
       .mt-meta { flex-direction:column; gap:7px; font-size:11px; line-height:1.45; }
-      .mt-stage { min-width:0; width:100%; min-height:620px; margin-top:0; overflow:hidden; }
-      .mt-device { transform:scale(.66); transform-origin:center; }
-      .mt-orbit { width:360px; height:360px; }
+      /* Keep the prototype compact and top-aligned on narrow screens. */
+      .mt-stage { min-width:0; width:100%; height:500px; min-height:500px; margin-top:0; overflow:hidden; align-items:start; justify-items:center; }
+      .mt-device { transform:scale(.52); transform-origin:center top; }
+      .mt-orbit { width:300px; height:300px; }
       .mt-thesis { margin-top:58px; padding-top:36px; }
       .mt-thesis-copy { font-size:15px; }
       .mt-footer-note { flex-direction:column; }
